@@ -14,6 +14,7 @@ This script demonstrates how to use Pulse Width Modulation (PWM) to control the 
 This script sets up a simple web server on the Raspberry Pi Pico W, allowing you to control an LED connected to the Pico via a web interface. You can turn the LED on and off by accessing the web page hosted by the Pico W. You can also set the PWM value of the LED using a slider on the web page. This allows you to control the brightness of the LED dynamically.
 It uses the `netman` library to manage network connections.
  
+based on: https://peppe8o.com/getting-started-with-wifi-on-raspberry-pi-pico-w-and-micropython/ (which dint come with my PWM bits)
 
 
 ## Running the Scripts
@@ -36,5 +37,6 @@ To run these scripts using VSCode with the Pico MicroPython library, follow thes
 
 - [Raspberry Pi Pico Documentation](https://www.raspberrypi.org/documentation/rp2040/getting-started/)
 - [MicroPython Documentation](https://docs.micropython.org/en/latest/)
+- [Random Nerd Tutorials - Raspberry Pi Pico PWM with MicroPython](https://randomnerdtutorials.com/raspberry-pi-pico-pwm-micropython/)
 
 Feel free to explore and modify the scripts to suit your needs. Happy coding!
