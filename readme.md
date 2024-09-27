@@ -26,9 +26,9 @@ To run these scripts using VSCode with the Pico MicroPython library, follow thes
 
 3. **Connect Your Raspberry Pi Pico**: Connect your Raspberry Pi Pico to your computer via USB.
 
-4. **Open the Project Folder**: Open the `/home/codeasm/Projects/ElectronicParts/RaspberryPi/Pico/MicroPython` folder in VSCode.
+4. **Open the Project Folder**: Open the folder containing your MicroPython scripts for the Raspberry Pi Pico in VSCode.
 
-5. **Select the Python File**: Click on the Python file you want to run (e.g., `blink.py`).
+5. **Select the Python File**: Click on the Python file you want to run (e.g., `blinky.py`).
 
 6. **Upload and Run**: Use the Pico-Go extension to upload and run the script on your Raspberry Pi Pico. You can do this by clicking on the "Run" button provided by the extension.
 
