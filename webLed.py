@@ -1,11 +1,16 @@
 import netman
 import socket
-from machine import Pin
+from machine import Pin, PWM
+from time import sleep
 
+# based on:
 # https://peppe8o.com/getting-started-with-wifi-on-raspberry-pi-pico-w-and-micropython/
 
 led = Pin("LED", Pin.OUT)
+pwm = PWM(Pin(20)) # Pin 20 is the breadboard LED for the Pico W
 
+#set the frequency to 2.5kHz
+pwm.freq(2500)
 country = 'IT'
 ssid = 'zakynthos'
 password = 'newyork18'
@@ -19,6 +24,14 @@ html = """<!DOCTYPE html>
 <p>Current status: %s</p>
 <p><a href="http://"""+wifi_connection[0]+"""/light/on">Turn ON</a></p>
 <p><a href="http://"""+wifi_connection[0]+"""/light/off">Turn OFF</a></p>
+<p>Set PWM: <input type="range" min="0" max="65535" value="0" id="pwmSlider" oninput="updatePWM(this.value)"></p>
+<script>
+function updatePWM(value) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/pwm/" + value, true);
+  xhr.send();
+}
+</script>
 <p>by <a href="https://codeasm.com">codeasm.com</a></p>
 </body>
 </html>
@@ -49,9 +62,22 @@ while True:
     led_status = request.find('GET / HTTP')
     led_on = request.find('/light/on')
     led_off = request.find('/light/off')
+    pwm_led = request.find('/pwm/')
     print( 'led on = ' + str(led_on))
     print( 'led off = ' + str(led_off))
-
+    print( 'pwm = ' + str(pwm_led))
+    if pwm_led > 0:
+          try:
+            pwm_value_str = request.split('/pwm/')[1].split(' ')[0]
+            pwm_value = int(pwm_value_str)
+            if 0 <= pwm_value <= 65535:
+              pwm.duty_u16(pwm_value)
+              stateis = f"LED PWM set to {pwm_value}"
+            else:
+              stateis = "PWM value out of range (0-65535)"
+          except (IndexError, ValueError):
+            stateis = "Invalid PWM value"
+        
     if led_status >0:
       print("LED status request") # No LED action
 
@@ -64,6 +90,7 @@ while True:
       print("led off")
       led.value(0)
       stateis = "LED is OFF"
+    
 
     response = html % stateis
 
@@ -75,3 +102,7 @@ while True:
     cl.close()
     s.close()
     print('connection closed')
+    # Recreate the socket to avoid EADDRINUSE error
+    s = socket.socket()
+    s.bind(addr)
+    s.listen(1)
